@@ -10,6 +10,7 @@ namespace Core
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
             //loggerFactory.AddConsole(LogLevel.Trace);
+            loggerFactory.AddFile("out.txt");
 
             app.UseEcho();
 
