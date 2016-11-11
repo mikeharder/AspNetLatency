@@ -1,0 +1,19 @@
+﻿using Microsoft.Owin.Hosting;
+using System;
+
+namespace OwinHttpListener
+{
+    class Program
+    {
+        private const string _url = "http://*:8081";
+
+        static void Main(string[] args)
+        {
+            using (WebApp.Start<Startup>(_url))
+            {
+                Console.WriteLine($"Listening on {_url}");
+                Console.ReadLine();
+            }
+        }
+    }
+}
