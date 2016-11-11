@@ -25,6 +25,7 @@ namespace Core
                 if (httpContext.Request.Method.Equals("GET", StringComparison.OrdinalIgnoreCase))
                 {
                     httpContext.Response.Body.Write(_response, 0, _response.Length);
+                    httpContext.Response.Body.Flush();
                     return Task.CompletedTask;
                 }
                 else if (httpContext.Request.Method.Equals("POST", StringComparison.OrdinalIgnoreCase))
