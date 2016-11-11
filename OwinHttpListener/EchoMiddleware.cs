@@ -27,7 +27,7 @@ namespace OwinHttpListener
             {
                 if (context.Request.Method.Equals("GET", StringComparison.OrdinalIgnoreCase))
                 {
-                    context.Request.Body.Write(_response, 0, _response.Length);
+                    context.Response.Body.Write(_response, 0, _response.Length);
                     return Task.CompletedTask;
                 }
                 else if (context.Request.Method.Equals("POST", StringComparison.OrdinalIgnoreCase))
