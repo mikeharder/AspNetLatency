@@ -25,12 +25,12 @@ namespace OwinHttpListener
 
             if (context.Request.Path.StartsWithSegments(_path))
             {
-                if (context.Request.Method == "GET")
+                if (context.Request.Method.Equals("GET", StringComparison.OrdinalIgnoreCase))
                 {
                     context.Request.Body.Write(_response, 0, _response.Length);
                     return Task.CompletedTask;
                 }
-                else if (context.Request.Method == "POST")
+                else if (context.Request.Method.Equals("POST", StringComparison.OrdinalIgnoreCase))
                 {
                     context.Request.Body.CopyTo(context.Response.Body);
                     return Task.CompletedTask;

@@ -22,12 +22,12 @@ namespace Core
         {
             if (httpContext.Request.Path.StartsWithSegments(_path, StringComparison.Ordinal))
             {
-                if (httpContext.Request.Method == "GET")
+                if (httpContext.Request.Method.Equals("GET", StringComparison.OrdinalIgnoreCase))
                 {
                     httpContext.Response.Body.Write(_response, 0, _response.Length);
                     return Task.CompletedTask;
                 }
-                else if (httpContext.Request.Method == "POST")
+                else if (httpContext.Request.Method.Equals("POST", StringComparison.OrdinalIgnoreCase))
                 {
                     httpContext.Request.Body.CopyTo(httpContext.Response.Body);
                     return Task.CompletedTask;
