@@ -9,6 +9,7 @@ namespace Core
     public class EchoMiddleware
     {
         private static readonly PathString _path = new PathString("/echo");
+
         private static readonly byte[] _response = Encoding.UTF8.GetBytes(@"{""foo"":""dafgdsfgsdfg"",""bar"":""fddfsafdsf""}");
 
         private readonly RequestDelegate _next;
@@ -22,15 +23,31 @@ namespace Core
         {
             if (httpContext.Request.Path.StartsWithSegments(_path, StringComparison.Ordinal))
             {
-                if (httpContext.Request.Method.Equals("GET", StringComparison.OrdinalIgnoreCase))
+                if (httpContext.Request.Method.Equals("GET", StringComparison.Ordinal))
                 {
-                    httpContext.Response.Body.Write(_response, 0, _response.Length);
-                    return Task.CompletedTask;
+                    if (httpContext.Request.QueryString.Value.Equals("?async", StringComparison.Ordinal))
+                    {
+                        httpContext.Response.StatusCode = 201;
+                        return httpContext.Response.Body.WriteAsync(_response, 0, _response.Length);
+                    }
+                    else
+                    {
+                        httpContext.Response.Body.Write(_response, 0, _response.Length);
+                        return Task.CompletedTask;
+                    }
                 }
-                else if (httpContext.Request.Method.Equals("POST", StringComparison.OrdinalIgnoreCase))
+                else if (httpContext.Request.Method.Equals("POST", StringComparison.Ordinal))
                 {
-                    httpContext.Request.Body.CopyTo(httpContext.Response.Body);
-                    return Task.CompletedTask;
+                    if (httpContext.Request.QueryString.Value.Equals("?async", StringComparison.Ordinal))
+                    {
+                        httpContext.Response.StatusCode = 201;
+                        return httpContext.Request.Body.CopyToAsync(httpContext.Response.Body);
+                    }
+                    else
+                    {
+                        httpContext.Request.Body.CopyTo(httpContext.Response.Body);
+                        return Task.CompletedTask;
+                    }
                 }
             }
 

@@ -25,15 +25,31 @@ namespace OwinHttpListener
 
             if (context.Request.Path.StartsWithSegments(_path))
             {
-                if (context.Request.Method.Equals("GET", StringComparison.OrdinalIgnoreCase))
+                if (context.Request.Method.Equals("GET", StringComparison.Ordinal))
                 {
-                    context.Response.Body.Write(_response, 0, _response.Length);
-                    return Task.CompletedTask;
+                    if (context.Request.QueryString.Value.Equals("async", StringComparison.Ordinal))
+                    {
+                        context.Response.StatusCode = 201;
+                        return context.Response.Body.WriteAsync(_response, 0, _response.Length);
+                    }
+                    else
+                    {
+                        context.Response.Body.Write(_response, 0, _response.Length);
+                        return Task.CompletedTask;
+                    }
                 }
-                else if (context.Request.Method.Equals("POST", StringComparison.OrdinalIgnoreCase))
+                else if (context.Request.Method.Equals("POST", StringComparison.Ordinal))
                 {
-                    context.Request.Body.CopyTo(context.Response.Body);
-                    return Task.CompletedTask;
+                    if (context.Request.QueryString.Value.Equals("async", StringComparison.Ordinal))
+                    {
+                        context.Response.StatusCode = 201;
+                        return context.Request.Body.CopyToAsync(context.Response.Body);
+                    }
+                    else
+                    {
+                        context.Request.Body.CopyTo(context.Response.Body);
+                        return Task.CompletedTask;
+                    }
                 }
             }
 

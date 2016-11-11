@@ -9,7 +9,7 @@ namespace Core
     {
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
-            loggerFactory.AddConsole(LogLevel.Trace);
+            //loggerFactory.AddConsole(LogLevel.Trace);
 
             app.UseEcho();
 

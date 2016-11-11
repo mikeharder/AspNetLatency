@@ -13,6 +13,8 @@ namespace Client
         public static void Main(string[] args)
         {
             var url = args[0];
+            var asyncUrl = url + "?async";
+
             var sw = new Stopwatch();
 
             Console.WriteLine("GET");
@@ -24,11 +26,29 @@ namespace Client
             sw.Stop();
             Console.WriteLine("Total Elapsed={0} ms", sw.Elapsed.TotalMilliseconds);
 
+            Console.WriteLine("GET ASYNC");
+            sw.Restart();
+            for (int i = 0; i < 20; i++)
+            {
+                TestCall(asyncUrl, "GET").Wait();
+            }
+            sw.Stop();
+            Console.WriteLine("Total Elapsed={0} ms", sw.Elapsed.TotalMilliseconds);
+
             Console.WriteLine("POST");
             sw.Restart();
             for (int i = 0; i < 20; i++)
             {
                 TestCall(url, "POST").Wait();
+            }
+            sw.Stop();
+            Console.WriteLine("Total Elapsed={0} ms", sw.Elapsed.TotalMilliseconds);
+
+            Console.WriteLine("POST ASYNC");
+            sw.Restart();
+            for (int i = 0; i < 20; i++)
+            {
+                TestCall(asyncUrl, "POST").Wait();
             }
             sw.Stop();
             Console.WriteLine("Total Elapsed={0} ms", sw.Elapsed.TotalMilliseconds);
