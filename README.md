@@ -12,7 +12,7 @@ dotnet run -c release
 ## OwinHttpListener
 ```
 cd OwinHttpListener
-nuget restore
+nuget restore ..\packages
 msbuild /p:Configuration=Release
 bin\Release\OwinHttpListener.exe
 ```
